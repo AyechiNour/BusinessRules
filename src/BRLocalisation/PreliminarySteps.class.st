@@ -71,6 +71,17 @@ PreliminarySteps >> initialize [
 	currentModel := nil.
 ]
 
+{ #category : 'filters' }
+PreliminarySteps >> selectBusinessClasses [
+
+	businessClasses := currentModel allModelClasses select: [ :c | 
+		(c superclassHierarchy anySatisfy: [ :class | class name = 'EntitePersistanteAbstract' ]) and: [ 
+			c methods anySatisfy: [ :m | 
+				(m name includesSubstring: 'mapperOR' caseSensitive: false ) and: [ m numberOfStatements > 0 ] ] 
+					]   
+        		].
+]
+
 { #category : 'accessing' }
 PreliminarySteps >> serviceClasses [
 
