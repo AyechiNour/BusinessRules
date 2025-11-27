@@ -82,6 +82,12 @@ PreliminarySteps >> selectBusinessClasses [
         		].
 ]
 
+{ #category : 'filters' }
+PreliminarySteps >> selectServiceClasses [
+	
+	serviceClasses := currentModel allModelClasses select: [ :c | c superclassHierarchy anySatisfy: [ :class | class name = 'ServiceAbstract' ] ]
+]
+
 { #category : 'accessing' }
 PreliminarySteps >> serviceClasses [
 
