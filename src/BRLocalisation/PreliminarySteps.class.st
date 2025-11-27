@@ -160,6 +160,47 @@ PreliminarySteps >> currentModel: aModel [
 ]
 
 { #category : 'filters' }
+PreliminarySteps >> filterServiceComments [
+
+	| serviceComments commentsCollection |
+	
+	"Récupérer commentaires des méthodes service"
+	serviceComments := filteredServiceMethods flatCollect: #comments.	
+
+	"Choisir les commentaires qui se trouvent au dessus de la methode"
+	serviceComments := serviceComments select: [:com | 
+		(com commentedEntity sourceAnchor startLine) > (com sourceAnchor startLine)
+	].
+
+	"Choisir les javaDoc"
+	serviceComments := serviceComments select: [ :com | com sourceText beginsWith: '/**' ].
+
+	"Eliminer les TODO"
+	serviceComments := serviceComments reject: [ :com | com sourceText includesSubstring: 'todo' caseSensitive: false ].
+
+	"Eliminer les commentaires courts ( moins de 20 caractères )"
+	serviceComments := (serviceComments reject: [ :com | com sourceText size < 20 ]).
+	
+	commentsCollection := OrderedCollection new.
+
+	commentsCollection := serviceComments collect: [ :com |
+   		self cleanComment: com
+	].
+	
+	"Eliminer les commentaires vides apres le cleaning"
+	commentsCollection := commentsCollection reject: [ :dict | (dict at: 'modifiedComment') isEmpty ].
+
+	"Eliminer les commentaires egaux au noms des méthodes"
+	commentsCollection := commentsCollection reject: [ :dict | (dict at: 'modifiedComment') = (dict at: 'methode') name ].
+
+	"Choisir les méthodes tagées"
+	commentsCollection := commentsCollection select: [ :dict | (dict at: 'methode') isTagged ].
+
+	"Récupérer la liste des commentaires"
+	filteredBusinessComments := commentsCollection collect: [ :dict | dict at: 'comment' ].
+]
+
+{ #category : 'filters' }
 PreliminarySteps >> filterServiceMethods [
 	
 	| serviceMethods |
