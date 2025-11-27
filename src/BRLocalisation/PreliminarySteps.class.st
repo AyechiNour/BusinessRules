@@ -139,6 +139,7 @@ PreliminarySteps >> cleanComment: aComment [
     	]].
 
 	 dict := (Dictionary new
+					at: 'method' put: aComment commentedEntity;
 					at: 'comment' put: aComment;
 					at: 'modifiedComment' put: oneLine trimBoth;
       	 			yourself).
@@ -191,13 +192,15 @@ PreliminarySteps >> filterServiceComments [
 	commentsCollection := commentsCollection reject: [ :dict | (dict at: 'modifiedComment') isEmpty ].
 
 	"Eliminer les commentaires egaux au noms des méthodes"
-	commentsCollection := commentsCollection reject: [ :dict | (dict at: 'modifiedComment') = (dict at: 'methode') name ].
+	commentsCollection := commentsCollection reject: [ :dict | (dict at: 'modifiedComment') = (dict at: 'method') name ].
 
 	"Choisir les méthodes tagées"
-	commentsCollection := commentsCollection select: [ :dict | (dict at: 'methode') isTagged ].
+	commentsCollection := commentsCollection select: [ :dict | (dict at: 'method') isTagged ].
 
 	"Récupérer la liste des commentaires"
 	filteredBusinessComments := commentsCollection collect: [ :dict | dict at: 'comment' ].
+	
+	Transcript show: (filteredBusinessComments size); cr.
 ]
 
 { #category : 'filters' }
@@ -229,6 +232,8 @@ PreliminarySteps >> filterServiceMethods [
 	serviceMethods := serviceMethods reject: [ :m | m cyclomaticComplexity < 4 ].
 	
 	filteredServiceMethods := serviceMethods.
+	
+	Transcript show: (filteredServiceMethods size); cr.
 ]
 
 { #category : 'accessing' }
