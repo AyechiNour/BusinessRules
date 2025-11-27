@@ -36,6 +36,37 @@ PreliminarySteps >> currentModel: aModel [
 	currentModel := aModel
 ]
 
+{ #category : 'filters' }
+PreliminarySteps >> filterServiceMethods [
+	
+	| serviceMethods |
+	
+	serviceMethods := serviceClasses flatCollect: #methods.
+	
+	"Eliminer les constructeurs"
+	serviceMethods := serviceMethods reject: [ :m | m isConstructor ].
+
+	"Eliminer les getters"
+	serviceMethods := serviceMethods reject: [ :m | m name beginsWith: 'get' ].
+
+	"Eliminer les setters"
+	serviceMethods := serviceMethods reject: [ :m | m name beginsWith: 'set' ].
+
+	"Eliminer les méthodes d'initialisation <Initializer> initialiser* initialisation* initialise*"
+	serviceMethods := serviceMethods reject: [ :m | (m name = '<Initializer>') or: [ m name beginsWith: 'initiali' ] ].
+
+	"Eliminer les méthodes fournir fournit fournier"
+	serviceMethods := serviceMethods reject: [ :m | m name beginsWith: 'fou' ].
+
+	"Eliminer les méthodes de recherche chercher et rechercher"
+	serviceMethods := serviceMethods reject: [ :m | (m name beginsWith: 'chercher') or: [ m name beginsWith: 'recherche' ] ].
+
+	"Eliminer les méthodes dont la complexité cyclomatique est inferieur à 4"
+	serviceMethods := serviceMethods reject: [ :m | m cyclomaticComplexity < 4 ].
+	
+	filteredServiceMethods := serviceMethods.
+]
+
 { #category : 'accessing' }
 PreliminarySteps >> filteredBusinessComments [
 
