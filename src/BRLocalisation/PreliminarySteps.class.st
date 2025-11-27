@@ -299,3 +299,14 @@ PreliminarySteps >> serviceClasses: classesCollection [
 
 	serviceClasses := classesCollection
 ]
+
+{ #category : 'initialization' }
+PreliminarySteps >> start: aModel [
+
+	"Cette méthode représente le point d'entrée"
+	currentModel := aModel.
+	self selectBusinessClasses.
+	self selectServiceClasses.
+	self filterServiceMethods.
+	self filterServiceComments.
+]
