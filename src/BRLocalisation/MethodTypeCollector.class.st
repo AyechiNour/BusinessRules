@@ -19,7 +19,7 @@ MethodTypeCollector >> extractNamesFromTypes [
 { #category : 'filtering' }
 MethodTypeCollector >> filterTypes [
 
-	types := types select: [ :t | (t isStub not) and: [ (t superclassHierarchy anySatisfy: [ :c | c name = 'EntitePersistanteAbstract' ]) and: [ 
+	types := types select: [ :t | ((t isNotNil) and: [ (t isStub not) ]) and: [ (t superclassHierarchy anySatisfy: [ :c | c name = 'EntitePersistanteAbstract' ]) and: [ 
 			t methods anySatisfy: [ :m | 
 				(m name includesSubstring: 'mapperOR' caseSensitive: false ) and: [ m numberOfStatements > 0 ] ] 
 					] ] ]
@@ -55,7 +55,7 @@ MethodTypeCollector >> getParametersTypes [
 { #category : 'extraction' }
 MethodTypeCollector >> getReturnType [
 
-	types addAll: (method returnType).
+	types add: (method declaredType).
 
 	
 ]
@@ -76,7 +76,7 @@ MethodTypeCollector >> getTypesFromParametricEntity [
 
 	types := ((types collect: [ :type | 
 		
-		(type isParametricEntity)
+		((type isNotNil) and: [ type isParametricEntity ])
 			ifTrue: [ type concreteParameters ]
 			ifFalse: [ type ]
 		
