@@ -80,7 +80,6 @@ ClassRelationAnalyzer >> buildClassRelationGraph [
     self computeConnectedComponents.
     self addIsolatedClassesAsGroups.
     self buildRelationGraph.
-	 relationGraph inspect.
 ]
 
 { #category : 'initialization' }
@@ -144,6 +143,30 @@ ClassRelationAnalyzer >> computeConnectedComponents [
 				
 				].  
 			].
+]
+
+{ #category : 'as yet unclassified' }
+ClassRelationAnalyzer >> distanceBetween: classA and: classB [
+
+    | rels |
+
+    rels := relationGraph at: classA ifAbsent: [OrderedCollection new].
+    rels do: [:pair |
+        | target relDict |
+        target := pair first.
+        relDict := pair second.
+        (target = classB) ifTrue: [^ relDict at: #distance].
+    ].
+
+	 rels := relationGraph at: classB ifAbsent: [OrderedCollection new].
+    rels do: [:pair |
+        | target relDict |
+        target := pair first.
+        relDict := pair second.
+        (target = classA) ifTrue: [^ relDict at: #distance].
+    ].
+
+    ^ nil "no relation found"
 ]
 
 { #category : 'as yet unclassified' }
