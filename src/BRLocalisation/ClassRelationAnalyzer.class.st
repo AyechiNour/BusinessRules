@@ -159,6 +159,7 @@ ClassRelationAnalyzer >> findIsolatedClasses [
 { #category : 'initialization' }
 ClassRelationAnalyzer >> initialize [
 
+	super initialize.
 	modelClasses := nil.
 	classGraph := Dictionary new.
 	isolatedClasses := Set new.

@@ -184,6 +184,7 @@ CommentCleaner >> flattenComment [
 { #category : 'initialization' }
 CommentCleaner >> initialize [
 
+	super initialize.
 	comment := nil.
 	commentSourceText := ''.
 ]

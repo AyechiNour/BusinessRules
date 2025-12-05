@@ -91,6 +91,7 @@ MethodTypeCollector >> getTypesFromParametricEntity [
 { #category : 'initialization' }
 MethodTypeCollector >> initialize [
 
+	super initialize.
 	method := nil.
 	types := OrderedCollection new.
 	typesNames := OrderedCollection new.
