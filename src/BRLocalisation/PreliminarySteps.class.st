@@ -71,10 +71,7 @@ PreliminarySteps >> filterServiceComments [
 	commentsCollection := commentsCollection reject: [ :com | com commentSourceText isEmpty = com commentedEntity name ].
 
 	"Choisir les méthodes tagées"
-	commentsCollection := commentsCollection select: [ :com | com commentedEntity isTagged ].
-
-	"Récupérer la liste des commentaires"
-	filteredBusinessComments := commentsCollection collect: [ :com | com comment].
+	filteredBusinessComments := commentsCollection select: [ :com | com commentedEntity isTagged ].
 ]
 
 { #category : 'filters' }
@@ -176,9 +173,12 @@ PreliminarySteps >> serviceClasses: classesCollection [
 PreliminarySteps >> start: aModel [
 
 	"Cette méthode représente le point d'entrée"
+	|classRelationsGraph|
+	
 	currentModel := aModel.
 	self selectBusinessClasses.
 	self selectServiceClasses.
 	self filterServiceMethods.
 	self filterServiceComments.
+	classRelationsGraph := ((ClassRelationAnalyzer new) modelClasses: businessClasses) buildClassRelationGraph.
 ]
