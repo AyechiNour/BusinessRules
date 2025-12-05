@@ -123,7 +123,7 @@ ClassRelationAnalyzer >> computeConnectedComponents [
 				distances := bfsResult at: #distances.
             visited addAll: component.
 
-            "Construire les relations avec distance"
+            "Build the relationships with distance"
             relationSet := Set new.
             component do: [:cl |
                 (classGraph at: cl) do: [:attrCls |

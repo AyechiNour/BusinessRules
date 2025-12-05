@@ -41,21 +41,21 @@ PreliminarySteps >> filterServiceComments [
 
 	| serviceComments commentsCollection |
 	
-	"Récupérer commentaires des méthodes service"
+	"Retrieve comments from service methods"
 	serviceComments := filteredServiceMethods flatCollect: #comments.	
 
-	"Choisir les commentaires qui se trouvent au dessus de la methode"
+	"Select the comments located above the method"
 	serviceComments := serviceComments select: [:com | 
 		(com commentedEntity sourceAnchor startLine) > (com sourceAnchor startLine)
 	].
 
-	"Choisir les javaDoc"
+	"Select the JavaDocs"
 	serviceComments := serviceComments select: [ :com | com sourceText beginsWith: '/**' ].
 
-	"Eliminer les TODO"
+	"Remove the TODOs"
 	serviceComments := serviceComments reject: [ :com | com sourceText includesSubstring: 'todo' caseSensitive: false ].
 
-	"Eliminer les commentaires courts ( moins de 20 caractères )"
+	"Remove short comments (less than 20 characters)"
 	serviceComments := (serviceComments reject: [ :com | com sourceText size < 20 ]).
 	
 	commentsCollection := OrderedCollection new.
@@ -64,13 +64,13 @@ PreliminarySteps >> filterServiceComments [
    		((CommentCleaner new) comment: com) cleanComment.
 	].
 
-	"Eliminer les commentaires vides apres le cleaning"
+	"Remove empty comments after cleaning"
 	commentsCollection := commentsCollection reject: [ :com | com commentSourceText isEmpty ].
 	
-	"Eliminer les commentaires egaux au noms des méthodes"
+	"Remove comments that are identical to the method names"
 	commentsCollection := commentsCollection reject: [ :com | com commentSourceText isEmpty = com commentedEntity name ].
 
-	"Choisir les méthodes tagées"
+	"Select the tagged methods"
 	filteredBusinessComments := commentsCollection select: [ :com | com commentedEntity isTagged ].
 ]
 
@@ -81,25 +81,25 @@ PreliminarySteps >> filterServiceMethods [
 	
 	serviceMethods := serviceClasses flatCollect: #methods.
 	
-	"Eliminer les constructeurs"
+	"Remove the constructors"
 	serviceMethods := serviceMethods reject: [ :m | m isConstructor ].
 
-	"Eliminer les getters"
+	"Remove the getters"
 	serviceMethods := serviceMethods reject: [ :m | m name beginsWith: 'get' ].
 
-	"Eliminer les setters"
+	"Remove the setters"
 	serviceMethods := serviceMethods reject: [ :m | m name beginsWith: 'set' ].
 
-	"Eliminer les méthodes d'initialisation <Initializer> initialiser* initialisation* initialise*"
+	"Remove the initialization methods <Initializer>, initialiser*, initialisation*, initialise*"
 	serviceMethods := serviceMethods reject: [ :m | (m name = '<Initializer>') or: [ m name beginsWith: 'initiali' ] ].
 
-	"Eliminer les méthodes fournir fournit fournier"
+	"Remove the methods fournir fournit"
 	serviceMethods := serviceMethods reject: [ :m | m name beginsWith: 'fou' ].
 
-	"Eliminer les méthodes de recherche chercher et rechercher"
+	"Remove the search methods"
 	serviceMethods := serviceMethods reject: [ :m | (m name beginsWith: 'chercher') or: [ m name beginsWith: 'recherche' ] ].
 
-	"Eliminer les méthodes dont la complexité cyclomatique est inferieur à 4"
+	"Remove methods whose cyclomatic complexity is less than 4"
 	serviceMethods := serviceMethods reject: [ :m | m cyclomaticComplexity < 4 ].
 	
 	filteredServiceMethods := serviceMethods.
@@ -172,7 +172,7 @@ PreliminarySteps >> serviceClasses: classesCollection [
 { #category : 'initialization' }
 PreliminarySteps >> start: aModel [
 
-	"Cette méthode représente le point d'entrée"
+	"This method represents the entry point"
 	|classRelationsGraph methodTypes|
 	
 	currentModel := aModel.
@@ -182,5 +182,4 @@ PreliminarySteps >> start: aModel [
 	self filterServiceComments.
 	classRelationsGraph := ((ClassRelationAnalyzer new) modelClasses: businessClasses) buildClassRelationGraph.
 	methodTypes := ((MethodAnalyser new) serviceMethods: filteredServiceMethods) analyse.
-	methodTypes inspect.
 ]

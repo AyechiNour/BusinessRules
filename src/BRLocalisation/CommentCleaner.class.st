@@ -13,7 +13,7 @@ Class {
 { #category : 'helper methods' }
 CommentCleaner >> cleanAngleBrackets [
 
-	 "Cette méthode supprime les mots entre < >"
+	 "This method removes the words between < >"
 
     | stack i char startIndex |
 
@@ -25,9 +25,8 @@ CommentCleaner >> cleanAngleBrackets [
          (char asciiValue = 62) ifTrue: [
 				(stack isEmpty) ifFalse: [
 					startIndex := stack removeLast.
-             	"Supprime de la dernière ouvrante jusqu'au '>' inclus"
+             	"Removes from the last opening bracket up to and including the '>'"
              	commentSourceText := (commentSourceText copyFrom: 1 to: startIndex - 1), (commentSourceText copyFrom: i + 1 to: commentSourceText size).
-             	"On ajuste i pour continuer correctement après suppression"
              	i := startIndex - 1.
 				].
 			].
@@ -58,15 +57,15 @@ CommentCleaner >> cleanComment [
 	 "Remove the parts of the string after $"
 	 self deleteBeforeAnyOf: '$'.
 
-	 "Supprimer les mots entre < >"
+	 "Remove the words between < >"
 	 self cleanAngleBrackets.
 	
-	 "Enlever quelques annotations"
+	 "Remove some annotations"
 	 self deleteFromComment: '@link'.
 	 self deleteFromComment: '@type'.
 	 self deleteFromComment: '@Type'.
 	
-	 "Enlever quelques caractères"
+	 "Remove some characters"
 	 self deleteFromComment: '/'.
 	 self deleteFromComment: '\'.
 	 self deleteFromComment: '*'.
@@ -162,8 +161,10 @@ CommentCleaner >> deleteSpaces [
 
 { #category : 'helper methods' }
 CommentCleaner >> flattenComment [
-    "Convert a multi-line text into a single line, adding a space between each line"
-    | lines oneLine |
+    
+	 "Convert a multi-line text into a single line, adding a space between each line"
+    
+	 | lines oneLine |
     
     "Split the text into lines"
     lines := commentSourceText lines.
