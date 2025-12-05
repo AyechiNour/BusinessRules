@@ -173,7 +173,7 @@ PreliminarySteps >> serviceClasses: classesCollection [
 PreliminarySteps >> start: aModel [
 
 	"Cette méthode représente le point d'entrée"
-	|classRelationsGraph|
+	|classRelationsGraph methodTypes|
 	
 	currentModel := aModel.
 	self selectBusinessClasses.
@@ -181,4 +181,6 @@ PreliminarySteps >> start: aModel [
 	self filterServiceMethods.
 	self filterServiceComments.
 	classRelationsGraph := ((ClassRelationAnalyzer new) modelClasses: businessClasses) buildClassRelationGraph.
+	methodTypes := ((MethodAnalyser new) serviceMethods: filteredServiceMethods) analyse.
+	methodTypes inspect.
 ]
