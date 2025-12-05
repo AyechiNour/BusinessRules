@@ -72,7 +72,7 @@ ClassRelationAnalyzer >> buildClassGraph [
 		].
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'starting' }
 ClassRelationAnalyzer >> buildClassRelationGraph [
  
     self buildClassGraph.

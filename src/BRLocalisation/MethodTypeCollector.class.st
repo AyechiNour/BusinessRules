@@ -109,7 +109,7 @@ MethodTypeCollector >> method: aMethod [
 	method := aMethod
 ]
 
-{ #category : 'initialization' }
+{ #category : 'starting' }
 MethodTypeCollector >> startTypeNamesExtraction [
 
 	self getTypes.

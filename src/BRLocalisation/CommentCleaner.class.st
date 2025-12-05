@@ -35,7 +35,7 @@ CommentCleaner >> cleanAngleBrackets [
 
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'starting' }
 CommentCleaner >> cleanComment [
 
 	 "Remove the explicitly mentioned parameters"

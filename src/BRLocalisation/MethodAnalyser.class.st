@@ -9,7 +9,7 @@ Class {
 	#package : 'BRLocalisation'
 }
 
-{ #category : 'as yet unclassified' }
+{ #category : 'starting' }
 MethodAnalyser >> analyse [
 
 	serviceMethods do: [ :m |

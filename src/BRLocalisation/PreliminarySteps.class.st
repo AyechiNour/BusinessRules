@@ -169,7 +169,7 @@ PreliminarySteps >> serviceClasses: classesCollection [
 	serviceClasses := classesCollection
 ]
 
-{ #category : 'initialization' }
+{ #category : 'starting' }
 PreliminarySteps >> start: aModel [
 
 	"This method represents the entry point"
