@@ -1,3 +1,6 @@
+"
+This class collects the object types of the business classes used by each method
+"
 Class {
 	#name : 'MethodTypeCollector',
 	#superclass : 'Object',
@@ -19,10 +22,13 @@ MethodTypeCollector >> extractNamesFromTypes [
 { #category : 'filtering' }
 MethodTypeCollector >> filterTypes [
 
-	types := types select: [ :t | ((t isNotNil) and: [ (t isStub not) ]) and: [ (t superclassHierarchy anySatisfy: [ :c | c name = 'EntitePersistanteAbstract' ]) and: [ 
-			t methods anySatisfy: [ :m | 
-				(m name includesSubstring: 'mapperOR' caseSensitive: false ) and: [ m numberOfStatements > 0 ] ] 
-					] ] ]
+	types := types select: [ :t | 
+					(t isNotNil) and: [
+						(t isStub not) and: [
+							(t superclassHierarchy anySatisfy: [ :c | c name = 'EntitePersistanteAbstract' ]) and: [ 
+								t methods anySatisfy: [ :m | 
+									(m name includesSubstring: 'mapperOR' caseSensitive: false ) and: [ 
+										m numberOfStatements > 0 ]]]]]].	
 ]
 
 { #category : 'extraction' }
