@@ -1,3 +1,6 @@
+"
+This class serves as the entry point. It prepares the objects required for the entire process — those that should be created once and for all at the beginning.
+"
 Class {
 	#name : 'PreliminarySteps',
 	#superclass : 'Object',
@@ -6,7 +9,9 @@ Class {
 		'serviceClasses',
 		'filteredServiceMethods',
 		'filteredBusinessComments',
-		'currentModel'
+		'currentModel',
+		'classRelationsGraph',
+		'methodTypes'
 	],
 	#category : 'BRLocalisation',
 	#package : 'BRLocalisation'
@@ -22,6 +27,18 @@ PreliminarySteps >> businessClasses [
 PreliminarySteps >> businessClasses: classesCollection [
 
 	businessClasses := classesCollection
+]
+
+{ #category : 'accessing' }
+PreliminarySteps >> classRelationsGraph [
+
+	^classRelationsGraph
+]
+
+{ #category : 'accessing' }
+PreliminarySteps >> classRelationsGraph: aCollection [
+
+	classRelationsGraph := aCollection
 ]
 
 { #category : 'accessing' }
@@ -57,6 +74,9 @@ PreliminarySteps >> filterServiceComments [
 
 	"Remove short comments (less than 20 characters)"
 	serviceComments := (serviceComments reject: [ :com | com sourceText size < 20 ]).
+	
+	"Prendre un petit nombre des commentaires"
+	serviceComments := serviceComments select: [ :com | com sourceText includesSubstring: 'OBLIGATOIRE' ].
 	
 	commentsCollection := OrderedCollection new.
 
@@ -137,7 +157,19 @@ PreliminarySteps >> initialize [
 	serviceClasses := OrderedCollection new.
 	filteredServiceMethods := OrderedCollection new.
 	filteredBusinessComments := OrderedCollection new.
-	currentModel := nil.
+	currentModel := FamixJavaModel new.
+]
+
+{ #category : 'accessing' }
+PreliminarySteps >> methodTypes [
+
+	^methodTypes
+]
+
+{ #category : 'accessing' }
+PreliminarySteps >> methodTypes: aCollection [
+
+	methodTypes := aCollection
 ]
 
 { #category : 'filters' }
@@ -173,8 +205,6 @@ PreliminarySteps >> serviceClasses: classesCollection [
 PreliminarySteps >> start: aModel [
 
 	"This method represents the entry point"
-	|classRelationsGraph methodTypes|
-	
 	currentModel := aModel.
 	self selectBusinessClasses.
 	self selectServiceClasses.
