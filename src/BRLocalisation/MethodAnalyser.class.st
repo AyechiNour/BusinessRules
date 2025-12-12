@@ -1,3 +1,6 @@
+"
+This method extracts the types for a method and the methods it calls.
+"
 Class {
 	#name : 'MethodAnalyser',
 	#superclass : 'Object',

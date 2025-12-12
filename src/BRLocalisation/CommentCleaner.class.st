@@ -1,3 +1,6 @@
+"
+This class is used to clean a comment
+"
 Class {
 	#name : 'CommentCleaner',
 	#superclass : 'Object',
