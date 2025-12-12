@@ -1,3 +1,6 @@
+"
+This class is used to find the relationships between classes.
+"
 Class {
 	#name : 'ClassRelationAnalyzer',
 	#superclass : 'Object',
@@ -12,7 +15,7 @@ Class {
 	#package : 'BRLocalisation'
 }
 
-{ #category : 'initialization' }
+{ #category : 'helpers' }
 ClassRelationAnalyzer >> addIsolatedClassesAsGroups [
 
    isolatedClasses collect: [:cls |
@@ -82,7 +85,7 @@ ClassRelationAnalyzer >> buildClassRelationGraph [
     self buildRelationGraph.
 ]
 
-{ #category : 'initialization' }
+{ #category : 'helpers' }
 ClassRelationAnalyzer >> buildRelationGraph [
 
     relationGroups do: [:relSet |
